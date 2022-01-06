@@ -21,12 +21,21 @@ const TextAreaProps = () => ({
   hideLabel: boolean('No label (hideLabel)', false),
   labelText: text('Label text (labelText)', 'Text Area label'),
   invalid: boolean('Show form validation UI (invalid)', false),
+  invalidCounterText: text(
+    'Content of form validation UI (invalidCounterText)',
+    'Characters count exceeded'
+  ),
   invalidText: text(
     'Content of form validation UI (invalidText)',
     'A valid value is required'
   ),
   helperText: text('Helper text (helperText)', 'Optional helper text.'),
   placeholder: text('Placeholder text (placeholder)', 'Placeholder text.'),
+  enableCounter: boolean(
+    'Enable character counter/limit (enableCounter)',
+    false
+  ),
+  maxCount: text('Character limit (maxCount)', ''),
   id: 'test2',
   cols: number('Columns (columns)', 50),
   rows: number('Rows (rows)', 4),
