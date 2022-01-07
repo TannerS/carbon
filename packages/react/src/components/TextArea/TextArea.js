@@ -6,7 +6,7 @@
  */
 
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import classNames from 'classnames';
 import { WarningFilled16 } from '@carbon/icons-react';
 import { useFeatureFlag } from '../FeatureFlags';
@@ -34,29 +34,36 @@ const TextArea = React.forwardRef(function TextArea(
 ) {
   const prefix = usePrefix();
   const enabled = useFeatureFlag('enable-v11-release');
-  const { defaultValue, disabled } = other;
-  const [textCount, setTextCount] = useState(defaultValue?.length || 0);
+  const { defaultValue, value, disabled } = other;
+  const [text, setText] = useState(defaultValue || value || '');
+  const [textCount, setTextCount] = useState(text.length || 0);
   const [isInvalidCount, setIsInvalidCount] = useState(false);
 
+  const handleCounterChange = useCallback(
+    (currentCount) => {
+      if (enableCounter && currentCount > maxCount) {
+        setIsInvalidCount(true);
+      } else {
+        setIsInvalidCount(false);
+      }
+
+      setTextCount(currentCount);
+    },
+    [enableCounter, maxCount]
+  );
+
+  useEffect(() => {
+    handleCounterChange(text.length);
+  }, [enableCounter, handleCounterChange, maxCount, text]);
+
   const isValid = () => invalid || isInvalidCount;
-
-  const handleCounterChange = (evt) => {
-    const currentCount = evt.target.value?.length || 0;
-
-    if (enableCounter && currentCount > maxCount) {
-      setIsInvalidCount(true);
-    } else {
-      setIsInvalidCount(false);
-    }
-
-    setTextCount(currentCount);
-  };
 
   const textareaProps = {
     id,
     onChange: (evt) => {
       if (!other.disabled) {
-        handleCounterChange(evt);
+        handleCounterChange(evt.target.value?.length || 0);
+        setText(evt.target.value);
         onChange(evt);
       }
     },
