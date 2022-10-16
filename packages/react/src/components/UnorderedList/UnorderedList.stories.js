@@ -8,7 +8,7 @@
 import React from 'react';
 
 import ListItem from '../ListItem';
-import UnorderedList from '../UnorderedList';
+import UnorderedList from './UnorderedList';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 const props = {
@@ -61,3 +61,33 @@ export const Nested = () => {
 };
 
 Nested.storyName = 'nested';
+
+export const Playground = (args) => {
+  return (
+    <UnorderedList {...args}>
+      <ListItem>Unordered List level 1</ListItem>
+      <ListItem>Unordered List level 1</ListItem>
+      <ListItem>Unordered List level 1</ListItem>
+    </UnorderedList>
+  );
+};
+
+Playground.argTypes = {
+  className: {
+    control: {
+      type: 'text',
+    },
+  },
+  isExpressive: {
+    control: {
+      type: 'boolean',
+    },
+    default: false,
+  },
+  nested: {
+    control: {
+      type: 'boolean',
+    },
+    default: false,
+  },
+};
